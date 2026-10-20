@@ -35,10 +35,6 @@
               <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
               <span id="shorten-label">URL 단축하기</span><span id="loading-dots" class="loading-dots" hidden></span>
             </button>
-            <button id="qr-btn" class="button secondary" type="button">
-              <svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h3v3h-3zM18 18h3v3h-3zM18 14h3M14 18v3"/></svg>
-              QR 코드 만들기
-            </button>
           </div>
         </form>
 
@@ -53,13 +49,17 @@
               </button>
             </div>
             <p id="copy-status" class="copy-status" role="status" aria-live="polite"></p>
-          </div>
-          <div id="qr-result" class="qr-result" hidden>
-            <div class="qr-frame"><img id="qr-image" alt="생성된 QR 코드" /></div>
-            <div>
-              <span class="result-label">QR 코드 완성</span>
-              <p>이미지를 길게 누르거나 우클릭해 저장하세요.</p>
-              <a id="download-btn" class="text-link" href="#" download="assignment-qr.png">이미지 열기 ↗</a>
+            <button id="qr-btn" class="button secondary result-qr-button" type="button" disabled>
+              <svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h3v3h-3zM18 18h3v3h-3zM18 14h3M14 18v3"/></svg>
+              QR 코드 만들기
+            </button>
+            <div id="qr-result" class="qr-result" hidden>
+              <div class="qr-frame"><img id="qr-image" alt="생성된 QR 코드" /></div>
+              <div>
+                <span class="result-label">QR 코드 완성</span>
+                <p>이미지를 길게 누르거나 우클릭해 저장하세요.</p>
+                <a id="download-btn" class="text-link" href="#" download="assignment-qr.png">이미지 열기 ↗</a>
+              </div>
             </div>
           </div>
         </section>

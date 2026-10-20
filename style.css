@@ -105,7 +105,8 @@ input:focus { border-color: var(--green); box-shadow: 0 0 0 4px rgba(39, 103, 73
 input::placeholder { color: #a2aaa4; }
 .error-message { min-height: 21px; margin: 7px 0 3px; color: #ad3c35; font-size: 13px; }
 
-.actions { display: grid; grid-template-columns: 1.4fr 1fr; gap: 12px; }
+.actions { display: block; }
+.actions .primary { width: 100%; }
 .button {
   height: 54px;
   display: inline-flex;
@@ -161,7 +162,10 @@ input::placeholder { color: #a2aaa4; }
 .copy-button span { font-family: "Noto Sans KR", sans-serif; font-size: 9px; font-weight: 700; line-height: 1; }
 .copy-button svg { width: 13px; height: 13px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 .copy-status { min-height: 18px; margin: 7px 0 -5px; color: var(--green-dark); font-size: 12px; font-weight: 700; }
-.qr-result { padding: 17px; border-radius: 12px; background: var(--mint); }
+.result-qr-button { width: 100%; margin-top: 10px; }
+.result-qr-button:disabled { cursor: not-allowed; opacity: .45; }
+.result-qr-button:disabled:hover { background: #fff; }
+.qr-result { margin-top: 17px; padding-top: 17px; border-top: 1px solid #cbd8ce; }
 .qr-frame { flex: 0 0 146px; padding: 10px; border: 1px solid var(--line); border-radius: 15px; background: #fff; }
 .qr-frame img { display: block; width: 124px; height: 124px; }
 .qr-result p { margin: 3px 0 8px; color: var(--muted); font-size: 14px; line-height: 1.5; }
@@ -173,7 +177,6 @@ input::placeholder { color: #a2aaa4; }
 @media (max-width: 560px) {
   .page-shell { padding: 22px 14px; }
   .tool-card { padding: 34px 22px; border-radius: 22px; }
-  .actions { grid-template-columns: 1fr; }
   .qr-result { align-items: flex-start; }
 }
 

@@ -114,6 +114,7 @@ shortenButton.addEventListener('click', async () => {
     shortUrl.value = shortened;
     shortUrl.classList.remove('is-placeholder');
     copyButton.disabled = false;
+    qrButton.disabled = false;
     copyStatus.textContent = '';
     shortResult.hidden = false;
     qrResult.hidden = true;
@@ -126,16 +127,10 @@ shortenButton.addEventListener('click', async () => {
 });
 
 qrButton.addEventListener('click', () => {
-  try {
-    const url = getValidUrl();
-    const source = `https://api.qrserver.com/v1/create-qr-code/?size=500x500&margin=24&data=${encodeURIComponent(url)}`;
-    qrImage.src = source;
-    downloadButton.href = source;
-    qrResult.hidden = false;
-    shortResult.hidden = true;
-  } catch (error) {
-    showError(error);
-  }
+  const source = `https://api.qrserver.com/v1/create-qr-code/?size=500x500&margin=24&data=${encodeURIComponent(shortUrl.value)}`;
+  qrImage.src = source;
+  downloadButton.href = source;
+  qrResult.hidden = false;
 });
 
 copyButton.addEventListener('click', async () => {
