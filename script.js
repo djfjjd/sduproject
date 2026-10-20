@@ -32,28 +32,57 @@ function showError(error) {
   input.focus();
 }
 
-async function requestShortUrl(endpoint, url) {
+async function fetchWithTimeout(resource, options = {}) {
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 7000);
+  const timeout = setTimeout(() => controller.abort(), 8000);
   try {
-    const response = await fetch(`${endpoint}?format=json&url=${encodeURIComponent(url)}`, {
+    return await fetch(resource, {
+      ...options,
       signal: controller.signal,
-      headers: { Accept: 'application/json' },
+      mode: 'cors',
+      cache: 'no-store',
     });
-    if (!response.ok) throw new Error('단축 서비스 오류');
-    const data = await response.json();
-    if (!data.shorturl) throw new Error(data.errormessage || 'URL을 단축하지 못했어요.');
-    return data.shorturl;
   } finally {
     clearTimeout(timeout);
   }
 }
 
+async function requestBlinkhop(url) {
+  const response = await fetchWithTimeout('https://api.blinkhop.com/v1/links', {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ url }),
+  });
+
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok || !data.short_url) {
+    throw new Error(data.error?.message || '기본 단축 서비스 오류');
+  }
+  return data.short_url;
+}
+
+async function requestLegacyShortener(endpoint, url) {
+  const response = await fetchWithTimeout(`${endpoint}?format=json&url=${encodeURIComponent(url)}`, {
+    headers: { Accept: 'application/json' },
+  });
+  if (!response.ok) throw new Error('단축 서비스 오류');
+  const data = await response.json();
+  if (!data.shorturl) throw new Error(data.errormessage || 'URL을 단축하지 못했어요.');
+  return data.shorturl;
+}
+
 async function shortenUrl(url) {
-  const services = ['https://is.gd/create.php', 'https://v.gd/create.php'];
-  for (const service of services) {
+  const services = [
+    () => requestBlinkhop(url),
+    () => requestLegacyShortener('https://is.gd/create.php', url),
+    () => requestLegacyShortener('https://v.gd/create.php', url),
+  ];
+  for (const request of services) {
     try {
-      return await requestShortUrl(service, url);
+      return await request();
     } catch { /* 다음 단축 서비스로 자동 재시도 */ }
   }
   throw new Error('단축 서비스에 연결할 수 없어요. 잠시 후 다시 시도해 주세요.');
