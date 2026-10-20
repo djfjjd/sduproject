@@ -8,7 +8,11 @@ const shortUrl = document.querySelector('#short-url');
 const qrImage = document.querySelector('#qr-image');
 const downloadButton = document.querySelector('#download-btn');
 const copyButton = document.querySelector('#copy-btn');
+const copyStatus = document.querySelector('#copy-status');
 const errorMessage = document.querySelector('#error-message');
+const shortenLabel = document.querySelector('#shorten-label');
+const loadingDots = document.querySelector('#loading-dots');
+let loadingTimer;
 
 function getValidUrl() {
   const value = input.value.trim();
@@ -28,38 +32,59 @@ function showError(error) {
   input.focus();
 }
 
-function shortenWithJsonp(url) {
-  return new Promise((resolve, reject) => {
-    const callbackName = `isgd_${Date.now()}`;
-    const script = document.createElement('script');
-    const timer = setTimeout(() => finish(new Error('단축 서비스 응답이 늦어지고 있어요. 다시 시도해 주세요.')), 10000);
+async function requestShortUrl(endpoint, url) {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 7000);
+  try {
+    const response = await fetch(`${endpoint}?format=json&url=${encodeURIComponent(url)}`, {
+      signal: controller.signal,
+      headers: { Accept: 'application/json' },
+    });
+    if (!response.ok) throw new Error('단축 서비스 오류');
+    const data = await response.json();
+    if (!data.shorturl) throw new Error(data.errormessage || 'URL을 단축하지 못했어요.');
+    return data.shorturl;
+  } finally {
+    clearTimeout(timeout);
+  }
+}
 
-    function finish(error, value) {
-      clearTimeout(timer);
-      script.remove();
-      delete window[callbackName];
-      error ? reject(error) : resolve(value);
-    }
+async function shortenUrl(url) {
+  const services = ['https://is.gd/create.php', 'https://v.gd/create.php'];
+  for (const service of services) {
+    try {
+      return await requestShortUrl(service, url);
+    } catch { /* 다음 단축 서비스로 자동 재시도 */ }
+  }
+  throw new Error('단축 서비스에 연결할 수 없어요. 잠시 후 다시 시도해 주세요.');
+}
 
-    window[callbackName] = (data) => {
-      if (data.shorturl) finish(null, data.shorturl);
-      else finish(new Error(data.errormessage || 'URL을 단축하지 못했어요.'));
-    };
+function startLoading() {
+  let dotCount = 1;
+  shortenLabel.textContent = '단축중';
+  loadingDots.hidden = false;
+  loadingDots.textContent = '.';
+  loadingTimer = setInterval(() => {
+    dotCount = (dotCount % 3) + 1;
+    loadingDots.textContent = '.'.repeat(dotCount);
+  }, 450);
+}
 
-    script.onerror = () => finish(new Error('단축 서비스에 연결할 수 없어요.'));
-    script.src = `https://is.gd/create.php?format=json&callback=${callbackName}&url=${encodeURIComponent(url)}`;
-    document.body.appendChild(script);
-  });
+function stopLoading() {
+  clearInterval(loadingTimer);
+  shortenLabel.textContent = 'URL 단축하기';
+  loadingDots.textContent = '';
+  loadingDots.hidden = true;
 }
 
 shortenButton.addEventListener('click', async () => {
   try {
     const url = getValidUrl();
     shortenButton.disabled = true;
-    shortenButton.lastChild.textContent = ' 단축 중...';
-    const shortened = await shortenWithJsonp(url);
-    shortUrl.textContent = shortened;
-    shortUrl.href = shortened;
+    startLoading();
+    const shortened = await shortenUrl(url);
+    shortUrl.value = shortened;
+    copyStatus.textContent = '';
     result.hidden = false;
     shortResult.hidden = false;
     qrResult.hidden = true;
@@ -67,7 +92,7 @@ shortenButton.addEventListener('click', async () => {
     showError(error);
   } finally {
     shortenButton.disabled = false;
-    shortenButton.lastChild.textContent = ' URL 단축하기';
+    stopLoading();
   }
 });
 
@@ -87,12 +112,17 @@ qrButton.addEventListener('click', () => {
 
 copyButton.addEventListener('click', async () => {
   try {
-    await navigator.clipboard.writeText(shortUrl.href);
-    copyButton.textContent = '복사됨';
-    setTimeout(() => { copyButton.textContent = '복사'; }, 1400);
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(shortUrl.value);
+    } else {
+      shortUrl.select();
+      if (!document.execCommand('copy')) throw new Error('복사 실패');
+      window.getSelection()?.removeAllRanges();
+    }
+    copyStatus.textContent = '클립보드에 복사되었어요.';
+    setTimeout(() => { copyStatus.textContent = ''; }, 2200);
   } catch {
-    shortUrl.focus();
-    errorMessage.textContent = '주소를 길게 눌러 직접 복사해 주세요.';
+    copyStatus.textContent = '복사하지 못했어요. 결과값을 직접 복사해 주세요.';
   }
 });
 

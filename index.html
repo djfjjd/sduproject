@@ -33,7 +33,7 @@
           <div class="actions">
             <button id="shorten-btn" class="button primary" type="button">
               <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-              URL 단축하기
+              <span id="shorten-label">URL 단축하기</span><span id="loading-dots" class="loading-dots" hidden></span>
             </button>
             <button id="qr-btn" class="button secondary" type="button">
               <svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h3v3h-3zM18 18h3v3h-3zM18 14h3M14 18v3"/></svg>
@@ -44,11 +44,14 @@
 
         <section id="result" class="result" aria-live="polite" hidden>
           <div id="short-result" class="short-result" hidden>
-            <div>
-              <span class="result-label">단축 URL</span>
-              <a id="short-url" href="#" target="_blank" rel="noopener"></a>
+            <span class="result-label">결과값</span>
+            <div class="result-value-wrap">
+              <input id="short-url" class="result-value" type="text" readonly aria-label="단축 URL 결과값" />
+              <button id="copy-btn" class="copy-button" type="button" aria-label="결과값 클립보드에 복사">
+                <svg aria-hidden="true" viewBox="0 0 24 24"><rect x="6" y="5" width="13" height="16" rx="2"/><path d="M9 5V3h7v2M9 9h7M9 13h7M9 17h5"/></svg>
+              </button>
             </div>
-            <button id="copy-btn" class="copy-button" type="button">복사</button>
+            <p id="copy-status" class="copy-status" role="status" aria-live="polite"></p>
           </div>
           <div id="qr-result" class="qr-result" hidden>
             <div class="qr-frame"><img id="qr-image" alt="생성된 QR 코드" /></div>
