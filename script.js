@@ -166,14 +166,25 @@ downloadButton.addEventListener('click', async () => {
 });
 
 copyButton.addEventListener('click', async () => {
+  let copied = false;
+
   try {
     if (navigator.clipboard && window.isSecureContext) {
-      await navigator.clipboard.writeText(shortUrl.value);
-    } else {
+      try {
+        await navigator.clipboard.writeText(shortUrl.value);
+        copied = true;
+      } catch { /* 권한이 거절되면 아래의 호환 방식으로 재시도 */ }
+    }
+
+    if (!copied) {
+      shortUrl.focus();
       shortUrl.select();
-      if (!document.execCommand('copy')) throw new Error('복사 실패');
+      shortUrl.setSelectionRange(0, shortUrl.value.length);
+      copied = document.execCommand('copy');
       window.getSelection()?.removeAllRanges();
     }
+
+    if (!copied) throw new Error('복사 실패');
     copyStatus.textContent = '클립보드에 복사되었어요.';
     setTimeout(() => { copyStatus.textContent = ''; }, 2200);
   } catch {
