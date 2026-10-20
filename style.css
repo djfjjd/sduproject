@@ -182,7 +182,7 @@ input::placeholder { color: #a2aaa4; }
 .result-qr-button { width: 100%; margin-top: 10px; }
 .result-qr-button:disabled { cursor: not-allowed; opacity: .45; }
 .result-qr-button:disabled:hover { background: #fff; }
-.qr-result { margin-top: 17px; padding-top: 17px; border-top: 1px solid #cbd8ce; }
+.qr-result { justify-content: center; margin-top: 17px; padding-top: 17px; border-top: 1px solid #cbd8ce; }
 .qr-frame { flex: 0 0 146px; padding: 10px; border: 1px solid var(--line); border-radius: 15px; background: #fff; }
 .qr-frame img { display: block; width: 124px; height: 124px; }
 .download-button {
@@ -212,7 +212,10 @@ input::placeholder { color: #a2aaa4; }
 @media (max-width: 560px) {
   .page-shell { padding: 22px 14px; }
   .tool-card { padding: 34px 22px; border-radius: 22px; }
-  .qr-result { flex-direction: column; align-items: center; }
+  .qr-result { flex-direction: row; align-items: center; gap: 10px; }
+  .qr-frame { flex-basis: 106px; padding: 7px; }
+  .qr-frame img { width: 90px; height: 90px; }
+  .download-button { min-width: 90px; padding: 0 10px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
