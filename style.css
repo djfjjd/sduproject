@@ -135,16 +135,19 @@ input::placeholder { color: #a2aaa4; }
 .short-result { position: relative; padding: 17px; border-radius: 12px; background: var(--mint); }
 .result-label { display: block; margin-bottom: 4px; color: var(--muted); font-size: 12px; font-weight: 700; letter-spacing: .04em; }
 .result-value-wrap { position: relative; }
-.result-value { height: 49px; padding: 0 52px 0 14px; color: var(--green-dark); font-weight: 700; background: #fff; }
+.result-value { height: 49px; padding: 0 64px 0 14px; color: var(--green-dark); font-weight: 700; background: #fff; }
 .copy-button {
   position: absolute;
   top: 50%;
   right: 7px;
   transform: translateY(-50%);
-  width: 36px;
-  height: 36px;
-  display: grid;
-  place-items: center;
+  width: 50px;
+  height: 39px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
   padding: 0;
   border: 0;
   border-radius: 8px;
@@ -153,7 +156,8 @@ input::placeholder { color: #a2aaa4; }
   cursor: pointer;
 }
 .copy-button:hover { background: var(--green-dark); }
-.copy-button svg { width: 19px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.copy-button span { font-family: "Noto Sans KR", sans-serif; font-size: 9px; font-weight: 700; line-height: 1; }
+.copy-button svg { width: 13px; height: 13px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 .copy-status { min-height: 18px; margin: 7px 0 -5px; color: var(--green-dark); font-size: 12px; font-weight: 700; }
 .qr-frame { flex: 0 0 146px; padding: 10px; border: 1px solid var(--line); border-radius: 15px; background: #fff; }
 .qr-frame img { display: block; width: 124px; height: 124px; }
