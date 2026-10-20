@@ -1,7 +1,6 @@
 const input = document.querySelector('#url-input');
 const shortenButton = document.querySelector('#shorten-btn');
 const qrButton = document.querySelector('#qr-btn');
-const result = document.querySelector('#result');
 const shortResult = document.querySelector('#short-result');
 const qrResult = document.querySelector('#qr-result');
 const shortUrl = document.querySelector('#short-url');
@@ -113,8 +112,9 @@ shortenButton.addEventListener('click', async () => {
     startLoading();
     const shortened = await shortenUrl(url);
     shortUrl.value = shortened;
+    shortUrl.classList.remove('is-placeholder');
+    copyButton.disabled = false;
     copyStatus.textContent = '';
-    result.hidden = false;
     shortResult.hidden = false;
     qrResult.hidden = true;
   } catch (error) {
@@ -131,7 +131,6 @@ qrButton.addEventListener('click', () => {
     const source = `https://api.qrserver.com/v1/create-qr-code/?size=500x500&margin=24&data=${encodeURIComponent(url)}`;
     qrImage.src = source;
     downloadButton.href = source;
-    result.hidden = false;
     qrResult.hidden = false;
     shortResult.hidden = true;
   } catch (error) {
