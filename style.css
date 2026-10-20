@@ -63,28 +63,16 @@ body::before {
   border-radius: 0 12px 0 0;
 }
 
-.eyebrow {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  margin-bottom: 20px;
-  color: var(--green);
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: .16em;
+.brand-image {
+  display: block;
+  width: clamp(110px, 24vw, 150px);
+  aspect-ratio: 1;
+  margin: 0 auto 34px;
+  border-radius: 24%;
+  object-fit: cover;
+  box-shadow: 0 12px 30px rgba(39, 103, 73, .16);
 }
 
-.eyebrow span { width: 25px; height: 2px; background: var(--green); }
-
-h1 {
-  margin: 0;
-  font-family: "Noto Sans KR", sans-serif;
-  font-size: clamp(35px, 7vw, 54px);
-  line-height: 1.15;
-  letter-spacing: -.055em;
-}
-
-.intro { margin: 15px 0 36px; color: var(--muted); font-size: 16px; line-height: 1.7; }
 label { display: block; margin: 0 0 9px; font-size: 13px; font-weight: 700; }
 
 .input-wrap { position: relative; }
@@ -151,8 +139,6 @@ input::placeholder { color: #a2aaa4; }
 .qr-frame img { display: block; width: 124px; height: 124px; }
 .qr-result p { margin: 3px 0 8px; color: var(--muted); font-size: 14px; line-height: 1.5; }
 .text-link { color: var(--green); font-size: 14px; font-weight: 700; }
-.privacy-note { display: flex; align-items: center; justify-content: center; gap: 7px; margin: 27px 0 0; color: #818982; font-size: 12px; }
-.privacy-note svg { width: 14px; fill: none; stroke: currentColor; stroke-width: 1.8; }
 [hidden] { display: none !important; }
 .short-result:not([hidden]), .qr-result:not([hidden]) { display: flex; }
 
@@ -160,7 +146,6 @@ input::placeholder { color: #a2aaa4; }
   .page-shell { padding: 22px 14px; }
   .tool-card { padding: 34px 22px; border-radius: 22px; }
   .actions { grid-template-columns: 1fr; }
-  .intro { margin-bottom: 28px; }
   .qr-result { align-items: flex-start; }
 }
 

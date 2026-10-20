@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="대학교 과제용 URL 단축 및 QR 코드 생성 도구" />
     <title>Link Lab · 과제용 링크 도구</title>
+    <link rel="icon" type="image/png" href="public/urltoqr.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -12,10 +13,8 @@
   </head>
   <body>
     <main class="page-shell">
-      <section class="tool-card" aria-labelledby="page-title">
-        <div class="eyebrow"><span></span> ASSIGNMENT TOOLKIT</div>
-        <h1 id="page-title">링크를 더 간단하게.</h1>
-        <p class="intro">과제에 넣을 주소를 붙여 넣고, 필요한 형태로 바로 변환하세요.</p>
+      <section class="tool-card" aria-label="URL 단축 및 QR 코드 생성기">
+        <img class="brand-image" src="public/urltoqr.png" alt="URL to QR" />
 
         <form id="link-form" novalidate>
           <label for="url-input">URL 입력</label>
@@ -55,10 +54,6 @@
           </div>
         </section>
 
-        <p class="privacy-note">
-          <svg aria-hidden="true" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
-          입력한 링크는 이 사이트에 저장되지 않습니다.
-        </p>
       </section>
     </main>
     <script src="script.js"></script>
