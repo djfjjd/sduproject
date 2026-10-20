@@ -55,11 +55,10 @@
             </button>
             <div id="qr-result" class="qr-result" hidden>
               <div class="qr-frame"><img id="qr-image" alt="생성된 QR 코드" /></div>
-              <div>
-                <span class="result-label">QR 코드 완성</span>
-                <p>이미지를 길게 누르거나 우클릭해 저장하세요.</p>
-                <a id="download-btn" class="text-link" href="#" download="assignment-qr.png">이미지 열기 ↗</a>
-              </div>
+              <button id="download-btn" class="download-button" type="button">
+                <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M5 20h14"/></svg>
+                <span id="download-label">다운로드</span>
+              </button>
             </div>
           </div>
         </section>

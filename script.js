@@ -6,6 +6,7 @@ const qrResult = document.querySelector('#qr-result');
 const shortUrl = document.querySelector('#short-url');
 const qrImage = document.querySelector('#qr-image');
 const downloadButton = document.querySelector('#download-btn');
+const downloadLabel = document.querySelector('#download-label');
 const copyButton = document.querySelector('#copy-btn');
 const copyStatus = document.querySelector('#copy-status');
 const errorMessage = document.querySelector('#error-message');
@@ -129,8 +130,39 @@ shortenButton.addEventListener('click', async () => {
 qrButton.addEventListener('click', () => {
   const source = `https://api.qrserver.com/v1/create-qr-code/?size=500x500&margin=24&data=${encodeURIComponent(shortUrl.value)}`;
   qrImage.src = source;
-  downloadButton.href = source;
+  downloadButton.dataset.source = source;
   qrResult.hidden = false;
+});
+
+function createDownloadFilename() {
+  const now = new Date();
+  const pad = (value) => String(value).padStart(2, '0');
+  return `sduproject_${now.getFullYear()}_${pad(now.getMonth() + 1)}_${pad(now.getDate())}_${pad(now.getHours())}:${pad(now.getMinutes())}.png`;
+}
+
+downloadButton.addEventListener('click', async () => {
+  const source = downloadButton.dataset.source;
+  if (!source) return;
+
+  try {
+    downloadButton.disabled = true;
+    downloadLabel.textContent = '다운로드 중';
+    const response = await fetchWithTimeout(source);
+    if (!response.ok) throw new Error('QR 이미지 다운로드 실패');
+    const blobUrl = URL.createObjectURL(await response.blob());
+    const link = document.createElement('a');
+    link.href = blobUrl;
+    link.download = createDownloadFilename();
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
+  } catch {
+    errorMessage.textContent = 'QR 코드를 다운로드하지 못했어요. 다시 시도해 주세요.';
+  } finally {
+    downloadButton.disabled = false;
+    downloadLabel.textContent = '다운로드';
+  }
 });
 
 copyButton.addEventListener('click', async () => {
